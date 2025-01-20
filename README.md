@@ -27,7 +27,7 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/k3ayv-meshbot.git
+git clone https://github.com/AmericanSquid/k3ayv-s-meshbot.git
 ```
 
 2. Install Dependencies
