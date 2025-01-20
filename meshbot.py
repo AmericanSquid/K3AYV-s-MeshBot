@@ -15,13 +15,15 @@ logging.basicConfig(
 )
 
 # OpenWeather API configuration
-API_KEY = "your_api_key_here"
-CITY_ID = "your_city_id_here"
+API_KEY = "your_api_key"
+CITY_ID = "your_city_id"
 BASE_URL = "http://api.openweathermap.org/data/2.5"
+LAT = "xx.xxxx"
+LON = "-xx.xxxx"
 
 # Initialize Meshtastic connection
-logging.info("Initializing connection to Meshtastic device")
-interface = meshtastic.ble_interface.BLEInterface('your_ble_device')
+logging.info("Initializing connection over BLE")
+interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')
 logging.info("Meshtastic connection established successfully")
 
 def onReceive(packet, interface):
@@ -33,6 +35,15 @@ def onReceive(packet, interface):
         if text.lower() == '!weather':
             logging.info("Weather command received, generating report...")
             weather_report_job()
+        elif text.lower() == '!test':
+            logging.info("Test command received, generating signal report...")
+            signal_test_report(packet)
+        elif text.lower() == '!ping':
+            logging.info("Ping command received, sending response...")
+            send_meshtastic_message("Ping OK")
+        elif text.lower() == '!help':
+            logging.info("Help command received, sending command list...")
+            send_help_message()
 
 def get_weather():
     logging.info("Fetching weather data from OpenWeather API...")
@@ -60,6 +71,39 @@ def format_weather_report(weather_data):
     report = f"Weather Report\nTemp: {temp}°F\nHumidity: {humidity}%\nWind: {wind_speed}mph\nConditions: {description}"
     logging.info(f"Formatted report: {report}")
     return report
+
+def signal_test_report(packet):
+    """Generate and send signal quality report"""
+    logging.info("Generating signal quality report...")
+
+    # Extract metrics from packet
+    snr = packet.get('rxSnr', 'N/A')
+    rssi = packet.get('rxRssi', 'N/A')
+
+    # Determine if message was direct or number of hops
+    via_route = packet.get('via', [])
+    if via_route:
+        hop_info = f"Hops: {len(via_route)}"
+    else:
+        hop_info = "Direct"
+
+    # Format the report
+    report = f"Signal Quality Report\nSNR: {snr} dB\nRSSI: {rssi} dBm\n{hop_info}"
+
+    # Send the report
+    send_meshtastic_message(report)
+    logging.info("Signal quality report sent")
+
+def send_help_message():
+    """Send list of available commands"""
+    help_text = """Commands:
+!weather - Weather report
+!test - Signal quality
+!ping - Test node
+!help - Commands"""
+
+    send_meshtastic_message(help_text)
+    logging.info("Help message sent")
 
 def send_meshtastic_message(message):
     logging.info(f"Sending message on channel 0: {message}")
@@ -101,7 +145,7 @@ def main():
     logging.info("Scheduled hourly severe weather checks")
 
     # Send initial startup message
-    send_meshtastic_message("Weather service started! Use !weather for current conditions")
+    send_meshtastic_message("K3AYV's MeshBot started! Reply !help for usage")
 
     logging.info("Weather service initialization complete")
 
