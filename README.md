@@ -91,6 +91,6 @@ Feel free to open an issue for any suggestions, bug reports, or general feedback
 
 ## License
 
-This project is licensed under the MIT License. Feel free to use, modify, and distribute the code as needed, while giving credit to the original author.
+This project is licensed under the GNU Affero General Public License (AGPL). See the LICENSE file for more information.
 
 Happy Meshing! 🎙️
