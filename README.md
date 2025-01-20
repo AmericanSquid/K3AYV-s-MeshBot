@@ -57,12 +57,12 @@ python meshbot.py
 
 This script can easily be modified to work with WiFi and Serial nodes.
 
-Swap out:
-`import meshtastic.ble_interface`
-for
-`import meshtastic.tcp_interface`
+- Swap out:
+  - `import meshtastic.ble_interface`\
+for:
+  - `import meshtastic.tcp_interface`
 
-Swap out:
-`interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')`
-for
-`interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')`
+- Swap out:
+  - `interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')`\
+for:
+  - `interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')`
