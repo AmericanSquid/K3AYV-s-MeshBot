@@ -1,4 +1,4 @@
-# K3AYV MeshBot
+# K3AYV's MeshBot
 
 A Meshtastic bot that provides weather reports and network diagnostics over mesh networks.
 
