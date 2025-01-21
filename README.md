@@ -1,6 +1,6 @@
 # K3AYV's MeshBot
 
-A Meshtastic bot that provides weather reports and network diagnostics over mesh networks.
+A Meshtastic bot that provides weather reports and network diagnostics over mesh networks. !ping and !test commands were inspired by [smuniz/mesh_grumpy_bot](https://github.com/smuniz/mesh_grumpy_bot).
 
 ## Features
 
