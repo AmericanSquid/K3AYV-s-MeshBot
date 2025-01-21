@@ -19,7 +19,8 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.11+name\Downloads\Bl_container\training\fold\"
+
 - Meshtastic device with Bluetooth capability
 - OpenWeather API key
 
@@ -31,6 +32,9 @@ git clone https://github.com/AmericanSquid/k3ayv-s-meshbot.git
 ```
 
 2. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
 3. Edit variables in the script for OpenWeather API:
 ```bash
@@ -41,6 +45,7 @@ BASE_URL = "http://api.openweathermap.org/data/2.5"
 LAT = "xx.xxxx"
 LON = "-xx.xxxx"
 ```
+
 4. Insert BLE address your Mesh device.
 ```bash
 # Initialize Meshtastic connection
@@ -48,10 +53,13 @@ logging.info("Initializing connection over BLE")
 interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')
 logging.info("Meshtastic connection established successfully")
 ```
-5. Run the Bot:
+
+5. Create Executable:
 ```bash
-python meshbot.py
+pyinstaller --onefile meshbot.py
 ```
+
+6. Run the Script
 
 ## Using with WiFi and Serial Nodes:
 
