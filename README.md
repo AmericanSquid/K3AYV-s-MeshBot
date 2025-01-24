@@ -9,6 +9,7 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 - Real-time weather reports from OpenWeather API
 - Signal quality testing (SNR/RSSI)
 - Network connectivity checks
+- Random fact generator using Numbers API, uselessfacts API, and [Muffin Labs History API](https://github.com/muffinista/really-simple-history-api)
 - Scheduled weather updates
 - Severe weather alerts monitoring
 
@@ -17,13 +18,13 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 - `!weather` - Get current weather report
 - `!test` - Check signal quality
 - `!ping` - Test node connectivity
+- '!fact' - Generate a random fact
 - `!help` - List available commands
 
 ## Requirements
 
-- Python 3.11+name\Downloads\Bl_container\training\fold\"
-
-- Meshtastic device with Bluetooth capability
+- Python 3.1
+- Meshtastic device
 - OpenWeather API key
 
 ## Installation
@@ -48,11 +49,11 @@ LAT = "xx.xxxx"
 LON = "-xx.xxxx"
 ```
 
-4. Insert BLE address your Mesh device.
+4. Insert internal IP address for your Mesh device.
 ```bash
 # Initialize Meshtastic connection
-logging.info("Initializing connection over BLE")
-interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')
+logging.info("Initializing connection over WiFi")
+interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')
 logging.info("Meshtastic connection established successfully")
 ```
 
@@ -63,16 +64,16 @@ pyinstaller --onefile meshbot.py
 
 6. Run the Script
 
-## Using with WiFi and Serial Nodes:
+## Using with BLE and Serial Nodes:
 
-This script can easily be modified to work with WiFi and Serial nodes.
-
-- Swap out:
-  - `import meshtastic.ble_interface`\
-for:
-  - `import meshtastic.tcp_interface`
+This script can easily be modified to work with BLE and Serial nodes.
 
 - Swap out:
-  - `interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')`\
-for:
-  - `interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')`
+  - `import meshtastic.tcp_interface`\
+  for:
+  - `import meshtastic.ble_interface`
+
+- Swap out:
+  - `interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')`\
+  for:
+  - `interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')`
