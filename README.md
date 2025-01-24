@@ -18,7 +18,7 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 - `!weather` - Get current weather report
 - `!test` - Check signal quality
 - `!ping` - Test node connectivity
-- '!fact' - Generate a random fact
+- `!fact` - Generate a random fact
 - `!help` - List available commands
 
 ## Requirements
