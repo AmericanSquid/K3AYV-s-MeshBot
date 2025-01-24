@@ -1,5 +1,5 @@
 import meshtastic
-import meshtastic.ble_interface
+import meshtastic.tcp_interface
 import requests
 from datetime import datetime
 import schedule
@@ -7,6 +7,7 @@ import time
 import json
 from pubsub import pub
 import logging
+import random
 
 # Set up logging
 logging.basicConfig(
@@ -22,16 +23,36 @@ LAT = "xx.xxxx"
 LON = "-xx.xxxx"
 
 # Initialize Meshtastic connection
-logging.info("Initializing connection over BLE")
-interface = meshtastic.ble_interface.BLEInterface('xx:xx:xx:xx:xx:xx')
+logging.info("Initializing connection over WiFi")
+interface = meshtastic.tcp_interface.TCPInterface('192.168.x.x')
 logging.info("Meshtastic connection established successfully")
 
+def get_random_fact():
+    """Get a random fact from multiple APIs"""
+    logging.info("Fetching random fact...")
+
+    fact_sources = [
+        lambda: requests.get('http://numbersapi.com/random/math').text,
+        lambda: requests.get('https://uselessfacts.jsph.pl/api/v2/facts/random?language=en').json()['text'],
+        lambda: get_today_historical_fact()
+    ]
+
+    return random.choice(fact_sources)()
+
+def get_today_historical_fact():
+    """Helper function for historical facts"""
+    today = datetime.now()
+    response = requests.get(f'https://history.muffinlabs.com/date/{today.month}/{today.day}')
+    data = response.json()
+    event = random.choice(data['data']['Events'])
+    return f"{event['year']}: {event['text']}"
 def onReceive(packet, interface):
     """Callback for received messages"""
     logging.info(f"Received packet: {packet}")
     if 'text' in packet['decoded']:
         text = packet['decoded']['text']
         logging.info(f"Received message: {text}")
+
         if text.lower() == '!weather':
             logging.info("Weather command received, generating report...")
             weather_report_job()
@@ -41,6 +62,14 @@ def onReceive(packet, interface):
         elif text.lower() == '!ping':
             logging.info("Ping command received, sending response...")
             send_meshtastic_message("Ping OK")
+        elif text.lower() == '!fact':
+            logging.info("Fact command received, fetching fact...")
+            try:
+                fact = get_random_fact()
+                send_meshtastic_message(fact)
+            except Exception as e:
+                logging.error(f"Error fetching fact: {e}")
+                send_meshtastic_message("Fact service unavailable")
         elif text.lower() == '!help':
             logging.info("Help command received, sending command list...")
             send_help_message()
@@ -100,6 +129,7 @@ def send_help_message():
 !weather - Weather report
 !test - Signal quality
 !ping - Test node
+!fact - Random fact
 !help - Commands"""
 
     send_meshtastic_message(help_text)
@@ -128,6 +158,13 @@ def check_severe_weather():
     else:
         logging.info("No severe weather alerts found")
 
+def advertise_bot():
+    """Send periodic reminder about the bot's presence"""
+    advertisement = "MeshBot is active! Reply !help for available commands"
+
+    send_meshtastic_message(advertisement)
+    logging.info("Sent bot reminder message")
+
 def main():
     logging.info("Weather service starting...")
 
@@ -143,6 +180,10 @@ def main():
     # Schedule severe weather checks
     schedule.every().hour.do(check_severe_weather)
     logging.info("Scheduled hourly severe weather checks")
+
+    # Schedule bot advertisements every 4 hours
+    schedule.every(4).hours.do(advertise_bot)
+    logging.info("Scheduled bot advertisements every 4 hours")
 
     # Send initial startup message
     send_meshtastic_message("K3AYV's MeshBot started! Reply !help for usage")
