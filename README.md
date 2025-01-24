@@ -6,12 +6,13 @@ A Meshtastic bot that provides weather reports and network diagnostics over mesh
 
 ## Features
 
-- Real-time weather reports from OpenWeather API
-- Signal quality testing (SNR/RSSI)
-- Network connectivity checks
-- Random fact generator using [Numbers API](https://numbersapi.com/), [uselessfacts API](https://uselessfacts.jsph.pl/), and [Muffin Labs History API](https://github.com/muffinista/really-simple-history-api)
-- Scheduled weather updates
-- Severe weather alerts monitoring
+- **Real-time weather reports:** Provides up-to-date weather information using the OpenWeather API.
+- **Signal quality testing:** Measures SNR (Signal-to-Noise Ratio) and RSSI (Received Signal Strength Indicator).
+- **Network connectivity checks:** Ensures stable and reliable network connections.
+- **Random fact generator:** Pulls interesting trivia from the Numbers API, Useless Facts API, and Muffin Labs History API.
+- **Self-advertising bot:** Periodically promotes its features to reach new users.
+- **Scheduled weather updates:** Automates regular weather report delivery.
+- **Severe weather alerts:** Monitors and notifies users about critical weather conditions.
 
 ## Commands
 
